@@ -1,5 +1,5 @@
 /*
-Usage: ./codesend packettype packet [packet2, packet3...]
+Usage: ./send_packet packettype packet [packet2, packet3...]
 packettype    - Type of packet: 'string' or 'string2'
 packet        - Data to include in packet
 packet2, etc  - Additional packets to be sent after the first
@@ -58,7 +58,7 @@ int main(int argc, char *argv[]) {
 	if (wiringPiSetup () == -1) {return 1;}
 	RCSwitch mySwitch = RCSwitch();
 	mySwitch.enableTransmit(PIN);
-
+	setvbuf(stdout, NULL, _IONBF, 0);
 
 	//For each set of inputted packet data:
 	switch (packet_type) {
@@ -66,16 +66,17 @@ int main(int argc, char *argv[]) {
 		for (int i=2; i<argc; i++) {
 			//Turn the input into a sequence of packets
 			std::string input = argv[i];
-			printf("Sending packet #0: []\n");
+			printf("Starting transmission... ");
 			mySwitch.send(input.length()<<8, 16);
 			for (char j=0; j<input.length(); j++) {
 				//Make packet
 				unsigned short packet = ((unsigned short)input[j])<<8 | ((unsigned short)j+1); //packet is 2 bytes: [data_char][sequence]
 
 				//Send packet
-				printf("Sending packet #%i: [%c]\n", j+1, input[j]);
+				printf("%c", input[j]);
 				mySwitch.send(packet, 16);
 			}
+				printf("\"\nDone.\n\n");
 		}
 		return 0;
 
@@ -94,7 +95,7 @@ int main(int argc, char *argv[]) {
 				//Packet is 4 bytes: [data1][data2][data3][sequence]
 
 				//Send packet
-				printf("Sending packet #%i: [%c%c%c]\n", (j+1)/3, input[j-2], input[j-1], input[j]);
+				printf("Sending packet #%i: \t[%c%c%c]\n", (j+1)/3, input[j-2], input[j-1], input[j]);
 				mySwitch.send(packet, 32);
 			}
 		}
