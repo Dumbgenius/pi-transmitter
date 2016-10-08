@@ -40,8 +40,7 @@ int main(int argc, char *argv[]) {
 	PacketType packet_type;
 	if (std::string(argv[1]) == "string") {
 		packet_type = string;
-	}
-	if (std::string(argv[1]) == "string2") {
+	} else if (std::string(argv[1]) == "string2") {
 		packet_type = string2;
 	} else {
 		printf("Invalid packet type. Valid types are: 'string', 'string2'\n");
