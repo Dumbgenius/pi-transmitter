@@ -24,6 +24,7 @@ int main(int argc, char *argv[]) {
 	// This pin is not the first pin on the RPi GPIO header!
 	// Consult https://projects.drogon.net/raspberry-pi/wiringpi/pins/
 	// for more information.
+	//This pin is pin 27 on the Raspberry Pi Model B+
 	int PIN = 2;
 
 	if (argc == 1) {
